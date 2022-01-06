@@ -3,24 +3,35 @@ import React , { useState,useEffect} from 'react'
 import {UserContext} from '../App'
 
 
-function ScoreRow({ player, gameRemaining, setGameRemaining}){
+function ScoreRow({ name, gameRemaining, setGameRemaining,index}){
     const data = React.useContext(UserContext); 
-
+    const gameName=data.gameName
     const [victory,setVictory]=useState(0)
     const [star,setStar]=useState(0)
 
     function increment(){
-        setVictory(prevState=>prevState+1)
+        data.setChampionship(prevState=> (
+            prevState.map((state,a)=>Object.keys(state)[0]===data.gameName ? {...state,
+                [gameName]:{
+                    ...state[gameName],
+                    ['player']:state[gameName]["player"].map((players,i)=>
+                        i===index ? {
+                            ...players,
+                            ["victory"]: players["victory"]+1
+                    
+                        }: players
+                    )
+                }   
+            }:state)           
+        ))
+ 
         setGameRemaining(prevState=>prevState-1)
     }
 
-    useEffect(() => {
-        
-    }, [gameRemaining])
 
     return(
         <View  style={styles.row}>
-            <Text style={styles.text}>{player}</Text>
+            <Text style={styles.text}>{name}</Text>
             {data.isEnabled && <Text style={styles.text}>{data.troiscentun===true ? '301':'501'}</Text>}
             <Text style={styles.text}>{victory}</Text>
             <Text style={styles.text}>{star}</Text>

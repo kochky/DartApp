@@ -13,10 +13,10 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [players,setPlayers]=useState(1)
   const [names,setNames]=useState({})
-  const [championship,setChampionship]=useState({})
+  const [championship,setChampionship]=useState()
   const [troiscentun,setTroiscentun]=useState(false)
   const [isEnabled,setIsEnabled]=useState(false)
-  const [gameName,setGameName]=useState("Game 1")
+  const [gameName,setGameName]=useState("Game1")
 
   return (  
     <UserContext.Provider value={{players:players,setPlayers:setPlayers,names:names,setNames:setNames,championship:championship,setChampionship:setChampionship,troiscentun:troiscentun,setTroiscentun:setTroiscentun,isEnabled:isEnabled,setIsEnabled:setIsEnabled,gameName:gameName,setGameName:setGameName}}>

@@ -24,9 +24,10 @@ function Game(){
             301:points,
             decompte:data.isEnabled
         }
+        if(points){
         Object.values(data.names).map((name)=>game.player.push({name,victory:0,star:0,points:points}))
-        data.setChampionship({...data.championship,[data.gameName]:game})
-       
+        data.setChampionship([{...data.championship,[data.gameName]:game}])
+        }
       }, [points])
 
    
@@ -42,8 +43,8 @@ function Game(){
                 <Text style={styles.text}>Ajout Victoire</Text>
 
             </View>
-            {Object.values(data.names).map((player,index)=>
-                <ScoreRow gameRemaining={gameRemaining} setGameRemaining={setGameRemaining} player={player} key={index}/>
+            {Object.values(data.names).map((name,index)=>
+                <ScoreRow gameRemaining={gameRemaining} index={index} setGameRemaining={setGameRemaining} name={name} key={index}/>
                 )}
         </View>
     )
