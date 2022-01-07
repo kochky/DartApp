@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Switch, Button,TextInput } from 'react-native';
 import React from 'react'
-import { UserContext } from '../App';
+import { UserContext } from '../Context'
 
 function Options({navigation}){
 

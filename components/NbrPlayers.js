@@ -1,5 +1,5 @@
 import  { StyleSheet, Text, View, Button, ImageBackground,TextInput } from 'react-native';
-import {UserContext} from '../App'
+import { UserContext } from '../Context'
 import React from 'react'
 
 function NbrPlayers ({ navigation }){

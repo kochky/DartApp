@@ -7,8 +7,8 @@ import NbrPlayers from './components/NbrPlayers';
 import PlayersNames from './components/PlayersNames';
 import Game from './components/Game';
 import Options from './components/Options';
+import { UserContext } from './Context'
 
-export const UserContext = React.createContext();
 const Stack = createNativeStackNavigator();
 
 export default function App() {

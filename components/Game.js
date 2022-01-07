@@ -1,32 +1,58 @@
 import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
 import React,{ useState, useEffect } from 'react'
 import ScoreRow from './ScoreRow';
-import { UserContext } from '../App';
+import { UserContext } from '../Context'
 
 
 function Game({navigation}){
     const data = React.useContext(UserContext); 
-    
+
     const [points,setPoints]=useState()
     const [loaded,setLoaded]=useState(false)
-    const [newVictory,setNewVictory]=useState(0)
-    const [newStar,setNewStar]=useState(0)
+    const [step,setStep]=useState(0)
+    const [winnerName,setWinnerName]=useState(false)
 
     const gameName=data.gameName
     let diff=0
     let diffStar=0
+    const score=[]
+    const stars=[]
 
 
     useEffect(() => {
-        const score=[]
+        //Met tout les infos dans le state championship
+          if(data.troiscentun){
+              setPoints(301)
+          }
+          else {
+              setPoints(501)
+          }
+          const game={
+              player:[],
+              301:points,
+              decompte:data.isEnabled,
+              victoryRemaining:10,
+              starRemaining:5,
+              winner:"",
+              gameOver:false
+          }
+          if(points){
+          Object.values(data.names).map((name)=>game.player.push({name,victory:0,star:0,points:points,inDuel:true,winner:false}))
+          data.setChampionship({...data.championship,[data.gameName]:game},setLoaded(true))
+          }  
+        }, [points])
+  
+    useEffect(() => {
         //verifie qu'il reste des parties en cours et compare les scores 
-        if (loaded) {
+        if (loaded && step===1) {
+            setStep(0)
             data.championship[gameName]["player"].map((player)=>score.push(player.victory))
             score.sort()
             diff= score[score.length-1]-score[score.length-2]-data.championship[gameName]["victoryRemaining"]
             
             //reinitialise les scores et rajoute une étoile au gagnant
             if((diff>0 && data.championship[gameName]["victoryRemaining"]>=0)||data.championship[gameName]["victoryRemaining"]<0 ){
+                setStep(2)
                 data.setChampionship( state =>({
                     ...state,
                         [gameName]:{
@@ -47,7 +73,6 @@ function Game({navigation}){
                         }   
                               
                 }))
-                setNewStar(prevState=>prevState+1)
 
             }else if (diff===0 && data.championship[gameName]["victoryRemaining"]===0){//s'il y a égalité, il a un duel
                 data.setChampionship(state=> ({
@@ -64,18 +89,14 @@ function Game({navigation}){
                     })     
                 )      
             }
-        }
-       
-    }, [newVictory])
-    
-     useEffect(() => {
-         //Donne la victoire à la personne qui a le plus d'étoile et s'il ne peut pas être rattrapé par les autres joueurs
-       const stars=[]
-        if (loaded) {
+        } //Donne la victoire à la personne qui a le plus d'étoile et s'il ne peut pas être rattrapé par les autres joueurs
+        else if (loaded && step===2 ) {
             data.championship[gameName]["player"].map((player)=>stars.push(player.star))
             stars.sort()
             diffStar= stars[stars.length-1]-stars[stars.length-2]-data.championship[gameName]["starRemaining"]
+            setStep(0)
             if((diffStar>0 && data.championship[gameName]["starRemaining"]>=0)||data.championship[gameName]["starRemaining"]<0 ){
+                setStep(3)
                 data.setChampionship(state=> ({
                    ...state,
                         [gameName]:{
@@ -107,12 +128,10 @@ function Game({navigation}){
                     }   
                 ))      
             }
+            
         }
-     }, [newStar]) 
-
-     useEffect(() => {
-         //map tout les joueurs pour trouver le gagnant
-        if(loaded){
+        else if(loaded && step===3){
+            setStep(1)
             if(data.championship[gameName]["gameOver"]){
                 let winnerName=""
                 data.championship[gameName]["player"].map(winner=>winner["winner"] && ( winnerName=winner["name"]))
@@ -123,40 +142,24 @@ function Game({navigation}){
                         ["winner"]:winnerName
                     }
                 }))
+                setWinnerName(true)
             }  
         }
-     }, [data.championship])
 
-    useEffect(() => {
-      //Met tout les infos dans le state championship
-        if(data.troiscentun){
-            setPoints(301)
-        }
-        else {
-            setPoints(501)
-        }
-        const game={
-            player:[],
-            301:points,
-            decompte:data.isEnabled,
-            victoryRemaining:10,
-            starRemaining:5,
-            winner:"",
-            gameOver:false
-        }
-        if(points){
-        Object.values(data.names).map((name)=>game.player.push({name,victory:0,star:0,points:points,inDuel:true,winner:false}))
-        data.setChampionship({...data.championship,[data.gameName]:game},setLoaded(true))
-        }  
-      }, [points])
 
+       
+    }, [step])
+    
+ 
+
+ 
     if(loaded){return( 
        <View style={styles.nameContainer}>
            <View style={styles.centeredView}>
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={data.championship[gameName]["gameOver"]}
+                    visible={winnerName}
                 >
                     <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -179,10 +182,11 @@ function Game({navigation}){
                 <Text style={styles.text}>Ajout Victoire</Text>
             </View>
             {Object.values(data.names).map((name,index)=>
-                <ScoreRow  setNewVictory={setNewVictory} index={index} name={name} key={index}/>
+                <ScoreRow step={step} setStep={setStep}  index={index} name={name} key={index}/>
                 )}
         </View>
-    )}else {return('')}
+    )}else {return(
+    <View></View>)}
 }
 
 const styles = StyleSheet.create({
