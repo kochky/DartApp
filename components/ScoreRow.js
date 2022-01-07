@@ -1,43 +1,62 @@
 import { StyleSheet, Text, View, Switch, Button,TextInput } from 'react-native';
-import React , { useState,useEffect} from 'react'
+import React from 'react'
 import {UserContext} from '../App'
 
 
-function ScoreRow({ name, gameRemaining, setGameRemaining,index}){
+function ScoreRow({ name,index,setNewVictory}){
     const data = React.useContext(UserContext); 
     const gameName=data.gameName
-    const [victory,setVictory]=useState(0)
-    const [star,setStar]=useState(0)
+  
 
     function increment(){
-        data.setChampionship(prevState=> (
-            prevState.map((state,a)=>Object.keys(state)[0]===data.gameName ? {...state,
-                [gameName]:{
-                    ...state[gameName],
-                    ['player']:state[gameName]["player"].map((players,i)=>
-                        i===index ? {
-                            ...players,
-                            ["victory"]: players["victory"]+1
-                    
-                        }: players
-                    )
-                }   
-            }:state)           
-        ))
- 
-        setGameRemaining(prevState=>prevState-1)
+        //Ajoute une victoire quand on clique sur le bouton, s'il s'agit du grand duel (plus de partie restantes ni d'étoiles), offre la victoire au champion
+        if(data.championship[gameName]["victoryRemaining"]>=0 && data.championship[gameName]["starRemaining"]>0 ){
+            data.setChampionship(state=> (
+                 {...state,
+                    [gameName]:{
+                        ...state[gameName],
+                        ["victoryRemaining"]:state[gameName]["victoryRemaining"]-1,
+                        ['player']:state[gameName]["player"].map((players,i)=>
+                            i===index ? {
+                                ...players,
+                                ["victory"]: players["victory"]+1                   
+                            }: players
+                        )
+                    }   
+                }         
+            ))  
+            setNewVictory(prevState=>prevState+1) 
+        }else if (data.championship[gameName]["starRemaining"]===0){
+            data.setChampionship(state=> (
+               {...state,
+                    [gameName]:{
+                        ...state[gameName],
+                        ["gameOVer"]:true,
+                        ["victoryRemaining"]:state[gameName]["victoryRemaining"]-1,
+                        ['player']:state[gameName]["player"].map((players,i)=>
+                            i===index ? {
+                                ...players,
+                                ["winner"]: true               
+                            }: players
+                        )
+                    }   
+                }       
+            ))  
+        }
     }
 
 
-    return(
+    
+    return (
         <View  style={styles.row}>
             <Text style={styles.text}>{name}</Text>
             {data.isEnabled && <Text style={styles.text}>{data.troiscentun===true ? '301':'501'}</Text>}
-            <Text style={styles.text}>{victory}</Text>
-            <Text style={styles.text}>{star}</Text>
-            <Text style={styles.text}><Button onPress={increment} title="+" ></Button></Text>
-        </View>
-    )
+            <Text style={styles.text}>{data.championship[gameName]["player"][index]["victory"]}</Text>
+            <Text style={styles.text}>{data.championship[gameName]["player"][index]["star"]}</Text>
+            {data.championship[gameName]["player"][index]["inDuel"] && <Text style={styles.text}><Button onPress={increment} title="+" ></Button></Text>}
+        </View>)
+    
+    
 }
 
 const styles = StyleSheet.create({

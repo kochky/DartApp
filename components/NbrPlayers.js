@@ -15,8 +15,8 @@ function NbrPlayers ({ navigation }){
                 onChangeText={players=>data.setPlayers(players)}
                 keyboardType="numeric"
             />
-            {(data.players<=8 && data.players!=0) && <Button title="Valider"color="#18534F"  onPress={() => navigation.navigate('Select name')} ></Button>}
-            {(data.players>8 || data.players===0) && <Text style={styles.error}>Le nombre de joueurs doit être entre 0 et 8</Text>}
+            {(data.players<=8 && data.players>=2) && <Button title="Valider"color="#18534F"  onPress={() => navigation.navigate('Select name')} ></Button>}
+            {(data.players>8 || data.players<2) && <Text style={styles.error}>Le nombre de joueurs doit être entre 2 et 8</Text>}
         </View>
     )
 }

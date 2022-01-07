@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Button, ImageBackground,TextInput } from 'react-native';
-import React,{ useEffect} from 'react'
+import React from 'react'
 import {UserContext} from '../App'
 
 function NameInput({data,i}){
