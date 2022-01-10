@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, Switch, Button,TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import React from 'react'
 import { UserContext } from '../Context'
+import Star from './Star';
+import Points from './Points';
 
 
-function ScoreRow({ name,index,step,setStep}){
+function ScoreRow({ name,index,step,setStep,points,setPoints}){
     const data = React.useContext(UserContext); 
     const gameName=data.gameName
   
@@ -48,15 +50,15 @@ function ScoreRow({ name,index,step,setStep}){
         }
     }
 
-
+   
     
     return (
         <View  style={styles.row}>
             <Text style={styles.text}>{name}</Text>
-            {data.isEnabled && <Text style={styles.text}>{data.troiscentun===true ? '301':'501'}</Text>}
             <Text style={styles.text}>{data.championship[gameName]["player"][index]["victory"]}</Text>
-            <Text style={styles.text}>{data.championship[gameName]["player"][index]["star"]}</Text>
-            {data.championship[gameName]["player"][index]["inDuel"] && <Text style={styles.text}><Button onPress={()=>increment()} title="+" ></Button></Text>}
+            <Star index={index} />
+            {(data.isEnabled && data.championship[gameName]["player"][index]["inDuel"]) ? <Points increment={increment} index={index} />:(<Text style={styles.text}><Button onPress={()=>increment()} title="+" ></Button></Text>)}
+            {!data.championship[gameName]["player"][index]["inDuel"] && <Text> </Text>}
         </View>)
     
     

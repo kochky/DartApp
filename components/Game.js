@@ -18,7 +18,6 @@ function Game({navigation}){
     const score=[]
     const stars=[]
 
-
     useEffect(() => {
         //Met tout les infos dans le state championship
           if(data.troiscentun){
@@ -150,9 +149,6 @@ function Game({navigation}){
        
     }, [step])
     
- 
-
- 
     if(loaded){return( 
        <View style={styles.nameContainer}>
            <View style={styles.centeredView}>
@@ -165,8 +161,8 @@ function Game({navigation}){
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>{data.championship[gameName]["winner"]} a  gagné !</Text>
                         <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => navigation.navigate('Menu')}
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => navigation.navigate('Menu')}
                         >
                         <Text style={styles.textStyle}>Retour Menu</Text>
                         </Pressable>
@@ -176,13 +172,12 @@ function Game({navigation}){
             </View>
             <View style={styles.row}>
                 <Text style={styles.text}>Joueur</Text>
-                {data.isEnabled && <Text style={styles.text}>Points restant</Text>}
                 <Text style={styles.text}>Victoires</Text>
                 <Text style={styles.text}>Etoiles</Text>
-                <Text style={styles.text}>Ajout Victoire</Text>
+                {data.isEnabled ? <Text style={styles.text}>Points restant</Text>:<Text style={styles.text}>Ajout Victoire</Text>}
             </View>
             {Object.values(data.names).map((name,index)=>
-                <ScoreRow step={step} setStep={setStep}  index={index} name={name} key={index}/>
+                <ScoreRow points={points} setPoints={setPoints} step={step} setStep={setStep}  index={index} name={name} key={index}/>
                 )}
         </View>
     )}else {return(
