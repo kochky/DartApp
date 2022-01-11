@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Switch, Button,TextInput } from 'react-native';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { UserContext } from '../Context'
 
 function Options({navigation}){
@@ -8,6 +8,10 @@ function Options({navigation}){
 
     const toggleSwitch = () => data.setIsEnabled(previousState => !previousState);
     const secondToggleSwitch = () => data.setTroiscentun(previousState => !previousState);
+
+    useEffect(() => {
+      data.setNewGame(true)
+    }, [])
 
     return (
         <View style={styles.container}>

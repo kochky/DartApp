@@ -10,7 +10,8 @@ function Menu ({ navigation }) {
             <View style={{flex:2}} ></View>
             <View style={{flex:1}}>
               <Button title="Nouvelle Partie" color="#18534F"  onPress={() => navigation.navigate('Options')} ></Button>
-              <Button title="Continuer Partie" color="#18534F"onPress={() => navigation.navigate('Game')}></Button>
+              <Button title="Continuer Partie" color="#18534F"onPress={() => navigation.navigate('Continue')}></Button>
+              <Button title="Historique" color="#18534F"onPress={() => navigation.navigate('Historique')}></Button>
             </View>
           </ImageBackground>
         </View>

@@ -19,6 +19,7 @@ function Game({navigation}){
     const stars=[]
 
     useEffect(() => {
+        if(data.newGame){
         //Met tout les infos dans le state championship
           if(data.troiscentun){
               setPoints(301)
@@ -27,6 +28,7 @@ function Game({navigation}){
               setPoints(501)
           }
           const game={
+              name:gameName,
               player:[],
               301:points,
               decompte:data.isEnabled,
@@ -38,8 +40,11 @@ function Game({navigation}){
           if(points){
           Object.values(data.names).map((name)=>game.player.push({name,victory:0,star:0,points:points,inDuel:true,winner:false}))
           data.setChampionship({...data.championship,[data.gameName]:game},setLoaded(true))
-          }  
-        }, [points])
+          }
+        }else {
+            setLoaded(true)
+        } 
+    }, [points])
   
     useEffect(() => {
         //verifie qu'il reste des parties en cours et compare les scores 
@@ -159,7 +164,7 @@ function Game({navigation}){
                 >
                     <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{data.championship[gameName]["winner"]} a  gagné !</Text>
+                        <Text style={styles.modalText}>{data.championship[gameName]["winner"]} a  gagné le championnat {gameName} !</Text>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => navigation.navigate('Menu')}
@@ -170,6 +175,7 @@ function Game({navigation}){
                     </View>
                 </Modal>
             </View>
+            <View><Text>{gameName}</Text></View>
             <View style={styles.row}>
                 <Text style={styles.text}>Joueur</Text>
                 <Text style={styles.text}>Victoires</Text>
