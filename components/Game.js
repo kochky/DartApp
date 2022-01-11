@@ -199,10 +199,10 @@ function Game({navigation}){
                 {data.isEnabled ? <Text style={styles.text}>Points restant</Text>:<Text style={styles.text}>Ajout Victoire</Text>}
             </View>
             {Object.values(data.names).map((name,index)=>
-                <ScoreRow points={points} setPoints={setPoints} step={step} setStep={setStep}  index={index} name={name} key={index}/>
+                <ScoreRow  step={step} setStep={setStep}  index={index} name={name} key={index}/>
                 )}
             {data.championship[gameName]["duel"] && <Text>Egalité et donc duel !</Text>}
-            {data.championship[gameName]["ballDeMatch"] && (<View><Text>Il manque une victoire à</Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text key={joueur.name}>{joueur.name}</Text>)}<Text>pour l'étoile</Text></View>)}
+            {(step===0 && data.championship[gameName]["ballDeMatch"]) && (<View><Text>Il manque une victoire à</Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text key={joueur.name}>{joueur.name}</Text>)}<Text>pour l'étoile</Text></View>)}
         </View>
     )}else {return(
     <View></View>)}

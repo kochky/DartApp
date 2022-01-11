@@ -2,12 +2,11 @@ import { StyleSheet,Image, View } from 'react-native';
 import React from 'react'
 import { UserContext } from '../Context'
 
-
 function Star ({index}){
     const data = React.useContext(UserContext); 
     const gameName=data.gameName
-    const emptyStar=require('../ressources/star-regular.svg')
-    const solidStar=require('../ressources/star-solid.svg')
+    const emptyStar=require('../ressources/star-regular.png')
+    const solidStar=require('../ressources/star-solid.png')
     switch (data.championship[gameName]["player"][index]["star"]){
         case 0:
             return <View style={styles.starContainer}>
@@ -172,8 +171,9 @@ const styles = StyleSheet.create({
 
     },
     star:{
-        width:30,
-        height:30
+        width:20,
+        height:20,
+        flex:1
     }
 })
 

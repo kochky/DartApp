@@ -5,7 +5,7 @@ import Star from './Star';
 import Points from './Points';
 
 
-function ScoreRow({ name,index,step,setStep,points,setPoints}){
+function ScoreRow({ name,index,step,setStep}){
     const data = React.useContext(UserContext); 
     const gameName=data.gameName
   

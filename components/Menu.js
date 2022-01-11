@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, Button, ImageBackground } from 'react-native';
+import { StyleSheet, View, Button, ImageBackground } from 'react-native';
 import image from '../ressources/pexels-thet-zin-6350012.jpg'
-
-
 
 function Menu ({ navigation }) {
     return (
         <View style={styles.container}>
-          <ImageBackground source={image} style={styles.image}>
+          <ImageBackground source={image} style={styles.image}>    
             <View style={{flex:2}} ></View>
             <View style={{flex:1}}>
               <Button title="Nouvelle Partie" color="#18534F"  onPress={() => navigation.navigate('Options')} ></Button>

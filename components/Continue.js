@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Button, Pressable } from 'react-native';
-import React,{ useState, useEffect } from 'react'
+import {  Text, View, Button  } from 'react-native';
+import React from 'react'
 import { UserContext } from '../Context'
 
 

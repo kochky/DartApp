@@ -14,6 +14,7 @@ function Options({navigation}){
 
     useEffect(() => {
       data.setNewGame(true)
+      data.setGameName('')
     }, [])
 
     useEffect(() => {

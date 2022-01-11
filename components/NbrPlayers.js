@@ -1,4 +1,4 @@
-import  { StyleSheet, Text, View, Button, ImageBackground,TextInput } from 'react-native';
+import  { StyleSheet, Text, View, Button,TextInput } from 'react-native';
 import { UserContext } from '../Context'
 import React from 'react'
 
