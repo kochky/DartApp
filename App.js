@@ -19,7 +19,7 @@ export default function App() {
   const [championship,setChampionship]=useState({})
   const [troiscentun,setTroiscentun]=useState(false)
   const [isEnabled,setIsEnabled]=useState(false)
-  const [gameName,setGameName]=useState("Game1")
+  const [gameName,setGameName]=useState("")
   const [newGame,setNewGame]=useState(false)
 
 
