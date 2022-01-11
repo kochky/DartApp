@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [players,setPlayers]=useState(2)
   const [names,setNames]=useState({})
-  const [championship,setChampionship]=useState()
+  const [championship,setChampionship]=useState({})
   const [troiscentun,setTroiscentun]=useState(false)
   const [isEnabled,setIsEnabled]=useState(false)
   const [gameName,setGameName]=useState("Game1")
