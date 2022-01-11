@@ -11,6 +11,7 @@ function Game({navigation}){
     const [loaded,setLoaded]=useState(false)
     const [step,setStep]=useState(0)
     const [winnerName,setWinnerName]=useState(false)
+    const [leader,setLeader]=useState(false)
 
     const gameName=data.gameName
     let diff=0
@@ -35,7 +36,9 @@ function Game({navigation}){
               victoryRemaining:10,
               starRemaining:5,
               winner:"",
-              gameOver:false
+              gameOver:false,
+              duel:false,
+              ballDeMatch:false
           }
           if(points){
           Object.values(data.names).map((name)=>game.player.push({name,victory:0,star:0,points:points,inDuel:true,winner:false}))
@@ -52,8 +55,8 @@ function Game({navigation}){
             setStep(0)
             data.championship[gameName]["player"].map((player)=>score.push(player.victory))
             score.sort()
+            setLeader(score)
             diff= score[score.length-1]-score[score.length-2]-data.championship[gameName]["victoryRemaining"]
-            
             //reinitialise les scores et rajoute une étoile au gagnant
             if((diff>0 && data.championship[gameName]["victoryRemaining"]>=0)||data.championship[gameName]["victoryRemaining"]<0 ){
                 setStep(2)
@@ -61,6 +64,8 @@ function Game({navigation}){
                     ...state,
                         [gameName]:{
                             ...state[gameName],
+                            ["duel"]:false,
+                            ["ballDeMatch"]:false,
                             ["victoryRemaining"]:10,
                             ["starRemaining"]:state[gameName]["starRemaining"]-1,
                             ['player']:state[gameName]["player"].map((players)=>
@@ -83,6 +88,8 @@ function Game({navigation}){
                     ...state,
                         [gameName]:{
                             ...state[gameName],
+                            ["ballDeMatch"]:false,
+                            ["duel"]:true,
                             ['player']:state[gameName]["player"].map((players)=>
                                 players.victory!==score[score.length-1] ? {
                                     ...players,
@@ -92,6 +99,15 @@ function Game({navigation}){
                         }   
                     })     
                 )      
+            }else if ((diff===0 || diff===-1) && data.championship[gameName]["victoryRemaining"]>0){
+                data.setChampionship( state =>({
+                    ...state,
+                        [gameName]:{
+                            ...state[gameName],
+                            ["ballDeMatch"]:true
+                        }
+                }))
+                    
             }
         } //Donne la victoire à la personne qui a le plus d'étoile et s'il ne peut pas être rattrapé par les autres joueurs
         else if (loaded && step===2 ) {
@@ -122,6 +138,7 @@ function Game({navigation}){
                      {...state,
                         [gameName]:{
                             ...state[gameName],
+                            ["duel"]:false,
                             ['player']:state[gameName]["player"].map((players)=>
                                 players.star!==stars[stars.length-1] ? {
                                     ...players,
@@ -151,9 +168,8 @@ function Game({navigation}){
         }
 
 
-       
+
     }, [step])
-    
     if(loaded){return( 
        <View style={styles.nameContainer}>
            <View style={styles.centeredView}>
@@ -185,6 +201,8 @@ function Game({navigation}){
             {Object.values(data.names).map((name,index)=>
                 <ScoreRow points={points} setPoints={setPoints} step={step} setStep={setStep}  index={index} name={name} key={index}/>
                 )}
+            {data.championship[gameName]["duel"] && <Text>Egalité et donc duel !</Text>}
+            {data.championship[gameName]["ballDeMatch"] && (<View><Text>Il manque une victoire à</Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text key={joueur.name}>{joueur.name}</Text>)}<Text>pour l'étoile</Text></View>)}
         </View>
     )}else {return(
     <View></View>)}
