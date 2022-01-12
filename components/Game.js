@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable,ImageBackground } from 'react-native';
 import React,{ useState, useEffect } from 'react'
 import ScoreRow from './ScoreRow';
 import { UserContext } from '../Context'
+import image from '../ressources/pexels-thet-zin-6350012.jpg'
+
 
 
 function Game({navigation}){
@@ -170,70 +172,114 @@ function Game({navigation}){
 
 
     }, [step])
+
     if(loaded){return( 
+        <ImageBackground source={image} style={styles.image}>    
+
        <View style={styles.nameContainer}>
-           <View style={styles.centeredView}>
                 <Modal
                     animationType="slide"
                     transparent={true}
                     visible={winnerName}
                 >
                     <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>{data.championship[gameName]["winner"]} a  gagné le championnat {gameName} !</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => navigation.navigate('Menu')}
-                        >
-                        <Text style={styles.textStyle}>Retour Menu</Text>
-                        </Pressable>
-                    </View>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>{data.championship[gameName]["winner"]} a  gagné le championnat {gameName} !</Text>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => navigation.navigate('Menu')}
+                            >
+                            <Text style={styles.textStyle}>Retour Menu</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </Modal>
+
+            <Text style={styles.title}>{gameName}</Text>
+            <View style={styles.messageContainer}>
+                {data.championship[gameName]["duel"] && <Text style={styles.message}>Egalité et donc duel !</Text>}
+                {(step===0 && data.championship[gameName]["ballDeMatch"]) && (<View style={styles.messageContainer,{flexDirection:"row"}}><Text style={styles.message}>Il manque une victoire à </Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text style={styles.message} key={joueur.name}>{joueur.name} </Text>)}<Text style={styles.message}>pour l'étoile</Text></View>)}
             </View>
-            <View><Text>{gameName}</Text></View>
-            <View style={styles.row}>
-                <Text style={styles.text}>Joueur</Text>
-                <Text style={styles.text}>Victoires</Text>
-                <Text style={styles.text}>Etoiles</Text>
-                {data.isEnabled ? <Text style={styles.text}>Points restant</Text>:<Text style={styles.text}>Ajout Victoire</Text>}
-            </View>
-            {Object.values(data.names).map((name,index)=>
-                <ScoreRow  step={step} setStep={setStep}  index={index} name={name} key={index}/>
+            <View style={{flex:8,width:"100%"}} >
+                <View style={styles.row}>
+                    <View style={{flex:1,flexDirection:"row"}}>
+                        <Text style={styles.text}></Text>
+                        <Text style={styles.text}>JOUEUR</Text>
+                    </View>
+                    <Text style={styles.text}>VICTOIRE</Text>
+                    {data.isEnabled ? <Text style={styles.text}>POINTS RESTANT</Text>:<Text style={styles.text}>AJOUT VICTOIRE</Text>}
+                </View>
+
+        
+                {Object.values(data.names).map((name,index)=>
+                    <ScoreRow  step={step} setStep={setStep}  index={index} name={name} key={index}/>
                 )}
-            {data.championship[gameName]["duel"] && <Text>Egalité et donc duel !</Text>}
-            {(step===0 && data.championship[gameName]["ballDeMatch"]) && (<View><Text>Il manque une victoire à</Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text key={joueur.name}>{joueur.name}</Text>)}<Text>pour l'étoile</Text></View>)}
+
+        
+            </View>
         </View>
+        </ImageBackground>
+
     )}else {return(
     <View></View>)}
 }
 
 const styles = StyleSheet.create({
     nameContainer:{
-       
+        backgroundColor:"rgba(24,83,79,0.7)",
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
+        width:"100%",
+        height:"100%"
+    },
+    scoreRowContainer:{
+        backgroundColor:"#ECF8F6",
+        flex:1,
+    },
+    image: {
+        flex: 1,
+        width:"100%",
+        height:"100%",
+      },
+    title:{
+        fontSize:26,
+        color:"#FEEAA1",
+        flex:1,
+        marginTop:20,
+        width:"100%",
+        textAlign:"center",
+        alignItems: 'center',
+
+    },
+    row:{
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        flexDirection:'row',
+        width:"100%",
+        textAlign:"center",
+        marginBottom:20,
+        color:"black"
+    },
+    text:{
+        textAlign:"center",
+        flex:1,
+    },
+    message:{
+        color:"white",
+    },
+    messageContainer:{
+        flex:1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
         width:"100%",
     },
-      row:{
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          flexDirection:'row',
-          width:"100%",
-          textAlign:"center",
-          marginBottom:20,
-      },
-      text:{
-          textAlign:"center",
-          flex:1,
-      },
-      centeredView: {
+    centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginTop: 22
-      },
-      modalView: {
+    },
+    modalView: {
         margin: 20,
         backgroundColor: "white",
         borderRadius: 20,
@@ -241,29 +287,29 @@ const styles = StyleSheet.create({
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 2
+            width: 0,
+            height: 2
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
-      },
-      button: {
+    },
+    button: {
         borderRadius: 20,
         padding: 10,
         elevation: 2
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
-        color: "white",
+    },
+    buttonClose: {
+        backgroundColor: "#18534F",
+    },
+    textStyle: {
+        color: "#ECF8F6",
         fontWeight: "bold",
         textAlign: "center"
-      },
-      modalText: {
+    },
+    modalText: {
         marginBottom: 15,
         textAlign: "center"
-      }
-    })
+    }
+})
 export default Game

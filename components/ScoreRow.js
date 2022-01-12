@@ -54,10 +54,12 @@ function ScoreRow({ name,index,step,setStep}){
     
     return (
         <View  style={styles.row}>
-            <Text style={styles.text}>{name}</Text>
+            <View style={{flex:1,flexDirection:"row"}}>
+                <Star index={index} />
+                <Text style={styles.text}>{name}</Text>
+            </View>
             <Text style={styles.text}>{data.championship[gameName]["player"][index]["victory"]}</Text>
-            <Star index={index} />
-            {(data.isEnabled && data.championship[gameName]["player"][index]["inDuel"]) ? <Points increment={increment} index={index} />:(<Text style={styles.text}><Button onPress={()=>increment()} title="+" ></Button></Text>)}
+            {(data.isEnabled && data.championship[gameName]["player"][index]["inDuel"]) ? <Points increment={increment} index={index} />:(<Text style={styles.text}><Button style={{flex:1,width:'100%'}} color="#226D68" onPress={()=>increment()} title="+" ></Button></Text>)}
             {!data.championship[gameName]["player"][index]["inDuel"] && <Text> </Text>}
         </View>)
     
@@ -73,10 +75,12 @@ const styles = StyleSheet.create({
           width:"100%",
           textAlign:"center",
           marginBottom:20,
+          backgroundColor:"#ECF8F6"
       },
       text:{
         textAlign:"center",
         flex:1,
+        color:"#226D68"
     }
   
     })

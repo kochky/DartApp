@@ -5,11 +5,11 @@ function Menu ({ navigation }) {
     return (
         <View style={styles.container}>
           <ImageBackground source={image} style={styles.image}>    
-            <View style={{flex:2}} ></View>
+            <View style={{flex:3}} ></View>
             <View style={{flex:1}}>
-              <Button title="Nouvelle Partie" color="#18534F"  onPress={() => navigation.navigate('Options')} ></Button>
-              <Button title="Continuer Partie" color="#18534F"onPress={() => navigation.navigate('Continue')}></Button>
-              <Button title="Historique" color="#18534F"onPress={() => navigation.navigate('Historique')}></Button>
+              <Button title="Nouvelle Partie" color="#rgba(24,83,79,0.7)"  onPress={() => navigation.navigate('Options')} ></Button>
+              <Button title="Continuer Partie" color="#rgba(24,83,79,0.7)" onPress={() => navigation.navigate('Continue')}></Button>
+              <Button title="Historique" color="#rgba(24,83,79,0.7)" onPress={() => navigation.navigate('Historique')}></Button>
             </View>
           </ImageBackground>
         </View>
