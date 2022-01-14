@@ -30,8 +30,9 @@ function Historique({navigation}){
     useEffect(() => {
         storeData(data.championship)
     }, [data.championship])
+    
 
-    return(
+     return(
         <ScrollView style={styles.view} contentContainerStyle={{ alignItems:"center"}}>
             {finishedGame.length>0 ? Object.values(data.championship).map((gameName,i)=>
                 gameName.gameOver===true&& (
@@ -58,8 +59,8 @@ function Historique({navigation}){
                 )
             ):
                 <Text>Aucun Historique</Text>}
-        </ScrollView>
-    )
+        </ScrollView>)
+    
 }
 const styles = StyleSheet.create({
     image: {

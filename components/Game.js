@@ -44,6 +44,7 @@ function Game({navigation}){
           else {
               setPoints(501)
           }
+        
           const game={
               name:gameName,
               player:[],
@@ -189,6 +190,7 @@ function Game({navigation}){
 
 
     }, [step])
+    
 
     if(loaded){return( 
         <ImageBackground source={image} style={styles.image}>    
@@ -238,13 +240,10 @@ function Game({navigation}){
                     <Text style={styles.text}>VICTOIRE</Text>
                     {data.isEnabled ? <Text style={styles.text}>POINTS RESTANT</Text>:<Text style={styles.text}>AJOUT VICTOIRE</Text>}
                 </View>
-
-        
-                {Object.values(data.names).map((name,index)=>
-                    <ScoreRow  step={step} setStep={setStep}  index={index} name={name} key={index}/>
+                {data.championship[gameName]["player"].map((name,index)=>
+                    <ScoreRow  step={step} setStep={setStep}  index={index} name={name.name} key={index}/>
                 )}
 
-        
             </View>
         </View>
         </ImageBackground>

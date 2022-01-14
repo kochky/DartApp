@@ -1,17 +1,16 @@
 import {StyleSheet,Text, View, Button, ScrollView, ImageBackground  } from 'react-native';
-import React,{  useEffect } from 'react'
+import React,{  useEffect  } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../Context'
-import image from '../ressources/pexels-bob-clark-21300.jpg'
 
 
 function Continue({navigation}){
     const data = React.useContext(UserContext); 
-
     function handlePress(name){
         data.setGameName(name)
         data.setNewGame(false)
         navigation.navigate('Game')
+
     }
 
     function deleteGame(gameName){
@@ -23,6 +22,7 @@ function Continue({navigation}){
     }
     const gameInProgress=[]
     Object.values(data.championship).map(cup=>!cup.gameOver&& gameInProgress.push(cup))
+ 
 
     const storeData = async (value) => {
         try {
@@ -32,16 +32,18 @@ function Continue({navigation}){
           // saving error
         }
       }
+
     useEffect(() => {
         storeData(data.championship)
     }, [data.championship])
 
-    return(
+return(
         <ScrollView style={styles.view} contentContainerStyle={{ alignItems:"center"}}>
-            {(gameInProgress.length>0) ? Object.values(data.championship).map((gameName,i)=>
-                gameName.gameOver===false&& (
+            {(gameInProgress.length>0) ? (
+                 Object.values(data.championship).map((gameName,i)=>
+                 gameName.gameOver===false&& 
                     <View key={gameName.name} style={styles.container}>
-                        <ImageBackground source={image} style={styles.image} imageStyle={{ borderRadius: 15}}>
+                        <ImageBackground source={require("../ressources/pexels-bob-clark-21300.jpg")} style={styles.image} imageStyle={{ borderRadius: 15}}>
                             <View style={styles.card} >
                                 <View style={styles.title}><Text>Nom de la partie: </Text><Text style={styles.gamename}>{gameName.name}</Text></View>
                                 <View style={styles.playersContainer}>
@@ -56,11 +58,11 @@ function Continue({navigation}){
                                 </View>
                             </View>
                         </ImageBackground>
-                    </View>
-                )
-                ):(<Text>Aucune partie en cours</Text>)}
-        </ScrollView>
-        
+                    </View>)
+            )
+                
+            :(<Text>Aucune partie en cours</Text>)}
+        </ScrollView>    
     )
 }
 const styles = StyleSheet.create({
