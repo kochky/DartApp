@@ -10,8 +10,12 @@ import Options from './components/Options';
 import Historique from './components/Historique';
 import Continue from './components/Continue';
 import { UserContext } from './Context'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
+
+
+
 
 export default function App() {
   const [players,setPlayers]=useState(2)
@@ -22,7 +26,18 @@ export default function App() {
   const [gameName,setGameName]=useState("")
   const [newGame,setNewGame]=useState(false)
 
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key')
+      jsonValue != null && setChampionship(JSON.parse(jsonValue))
 
+    } catch(e) {
+      // error reading value
+    }    
+  }
+  useEffect(() => {
+    getData()
+  }, [])
 
   return (  
     <UserContext.Provider value={{newGame:newGame,setNewGame:setNewGame,players:players,setPlayers:setPlayers,names:names,setNames:setNames,championship:championship,setChampionship:setChampionship,troiscentun:troiscentun,setTroiscentun:setTroiscentun,isEnabled:isEnabled,setIsEnabled:setIsEnabled,gameName:gameName,setGameName:setGameName}}>

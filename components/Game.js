@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, Modal, Pressable,ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable,ImageBackground,Image } from 'react-native';
 import React,{ useState, useEffect } from 'react'
 import ScoreRow from './ScoreRow';
 import { UserContext } from '../Context'
 import image from '../ressources/pexels-thet-zin-6350012.jpg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -21,6 +22,19 @@ function Game({navigation}){
     const score=[]
     const stars=[]
 
+    const storeData = async (value) => {
+        try {
+          const jsonValue = JSON.stringify(value)
+          await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+          // saving error
+        }
+      }
+
+    useEffect(() => {
+        storeData(data.championship)
+    }, [data.championship])
+    
     useEffect(() => {
         if(data.newGame){
         //Met tout les infos dans le state championship
@@ -48,6 +62,9 @@ function Game({navigation}){
           }
         }else {
             setLoaded(true)
+            data.championship[gameName]["player"].map((player)=>score.push(player.victory))
+            score.sort()
+            setLeader(score)
         } 
     }, [points])
   
@@ -195,15 +212,27 @@ function Game({navigation}){
                     </View>
                 </Modal>
 
+            <View style={styles.quitContainer}>
+                <Pressable 
+                style={{width:30,height:15}}
+                onPress={() => navigation.popToTop()}
+                >
+                    <Image 
+                        source={require("../ressources/quit.png")}
+                        style={{width:15,height:15}}
+                        >
+                    </Image>
+                </Pressable>
+            </View>
+
             <Text style={styles.title}>{gameName}</Text>
             <View style={styles.messageContainer}>
                 {data.championship[gameName]["duel"] && <Text style={styles.message}>Egalité et donc duel !</Text>}
                 {(step===0 && data.championship[gameName]["ballDeMatch"]) && (<View style={styles.messageContainer,{flexDirection:"row"}}><Text style={styles.message}>Il manque une victoire à </Text>{data.championship[gameName]["player"].map(joueur=>(joueur.victory===leader[leader.length-1]) && <Text style={styles.message} key={joueur.name}>{joueur.name} </Text>)}<Text style={styles.message}>pour l'étoile</Text></View>)}
             </View>
-            <View style={{flex:8,width:"100%"}} >
+            <View style={{flex:16,width:"100%"}} >
                 <View style={styles.row}>
-                    <View style={{flex:1,flexDirection:"row"}}>
-                        <Text style={styles.text}></Text>
+                    <View style={{flex:2,flexDirection:"row"}}>
                         <Text style={styles.text}>JOUEUR</Text>
                     </View>
                     <Text style={styles.text}>VICTOIRE</Text>
@@ -226,11 +255,17 @@ function Game({navigation}){
 
 const styles = StyleSheet.create({
     nameContainer:{
-        backgroundColor:"rgba(24,83,79,0.7)",
+        backgroundColor:"rgba(24,83,79,0.5)",
         alignItems: 'center',
         justifyContent: 'space-around',
         width:"100%",
         height:"100%"
+    },
+    quitContainer:{
+        flex:1,
+        justifyContent:"center",
+        alignItems: 'flex-end',
+        width:"100%",
     },
     scoreRowContainer:{
         backgroundColor:"#ECF8F6",
@@ -243,13 +278,11 @@ const styles = StyleSheet.create({
       },
     title:{
         fontSize:26,
-        color:"#FEEAA1",
-        flex:1,
-        marginTop:20,
+        color:"white",
+        flex:2,
         width:"100%",
         textAlign:"center",
-        alignItems: 'center',
-
+        textAlignVertical:"center",
     },
     row:{
         alignItems: 'center',
@@ -263,15 +296,18 @@ const styles = StyleSheet.create({
     text:{
         textAlign:"center",
         flex:1,
+        color:"white"
     },
     message:{
-        color:"white",
+        color:"#226D68",
     },
     messageContainer:{
-        flex:1,
+        flex:2,
         alignItems: 'center',
         justifyContent: 'space-around',
         width:"100%",
+        width:"90%",
+        marginBottom:20
     },
     centeredView: {
         flex: 1,

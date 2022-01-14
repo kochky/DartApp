@@ -12,11 +12,21 @@ function Options({navigation}){
 
     const toggleSwitch = () => data.setIsEnabled(previousState => !previousState);
     const secondToggleSwitch = () => data.setTroiscentun(previousState => !previousState);
-
     useEffect(() => {
       data.setNewGame(true)
       data.setGameName('')
+      
     }, [])
+
+
+        useEffect(() => {
+            const listener= navigation.addListener(
+                    'focus', () => {
+                       setAlreadyUse(false)
+                    }
+                );
+            return listener
+            }, [])
 
     useEffect(() => {
         if(alreadyUse === true){
@@ -47,14 +57,14 @@ function Options({navigation}){
                     <View style={styles.points}> 
                         <Text style={{ flex:1,color:"white"}}>Points de départ: </Text>
                         <View style={styles.valueContainer}> 
-                        {!data.troiscentun ? <Text style={{color:"#FEEAA1"}}>   501</Text>: <Text style={{color:"white"}}>   501</Text>}
+                        {!data.troiscentun ? <Text style={{color:"#E2E9C0"}}>   501</Text>: <Text style={{color:"white"}}>   501</Text>}
                             <Switch 
                                 trackColor={{true: 'white', false: 'white'}}
                                 thumbColor={"white"}
                                 onValueChange={secondToggleSwitch}
                                 value={data.troiscentun}
                             />
-                            {data.troiscentun ? <Text style={{color:"#FEEAA1"}}>   301</Text>: <Text style={{color:"white"}}>   301</Text>}
+                            {data.troiscentun ? <Text style={{color:"#E2E9C0"}}>   301</Text>: <Text style={{color:"white"}}>   301</Text>}
                         </View>   
                     </View>
                     <View style={styles.decompte}>
@@ -79,7 +89,7 @@ function Options({navigation}){
                                 <Text>Le nom de la partie est déja utilisée, si vous continuer la partie sera écrasée.</Text>
                                 <View style={styles.buttonContainer}>
                                     <Button  color="#18534F"  onPress={()=>(setAlreadyUse(false),navigation.navigate('Select players'))} title="Continuer"></Button>
-                                    <Button  color="red" onPress={()=>setAlreadyUse(false)} title="Changer"></Button>
+                                    <Button  color="#A7001E" onPress={()=>setAlreadyUse(false)} title="Changer"></Button>
                                 </View>
                             </View>
                         </View>
@@ -97,7 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"rgba(24,83,79,0.7)",
+        backgroundColor:"rgba(24,83,79,0.5)",
     },
     validateButton:{
         alignItems: 'center',
@@ -110,7 +120,7 @@ const styles = StyleSheet.create({
         height:50,
         borderWidth: 1,
         borderColor:"#18534F",
-        color:"#FEEAA1",
+        color:"#E2E9C0",
         fontSize:20,
         width:"90%",    
     },

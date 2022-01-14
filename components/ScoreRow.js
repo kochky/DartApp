@@ -54,12 +54,13 @@ function ScoreRow({ name,index,step,setStep}){
     
     return (
         <View  style={styles.row}>
-            <View style={{flex:1,flexDirection:"row"}}>
+            <View style={{flex:2,flexDirection:"row",paddingLeft:20}}>
+                <Text style={styles.text,{flex:3}}>{name}</Text>
                 <Star index={index} />
-                <Text style={styles.text}>{name}</Text>
+
             </View>
             <Text style={styles.text}>{data.championship[gameName]["player"][index]["victory"]}</Text>
-            {(data.isEnabled && data.championship[gameName]["player"][index]["inDuel"]) ? <Points increment={increment} index={index} />:(<Text style={styles.text}><Button style={{flex:1,width:'100%'}} color="#226D68" onPress={()=>increment()} title="+" ></Button></Text>)}
+            {(data.isEnabled && data.championship[gameName]["player"][index]["inDuel"]) ? <Points increment={increment} index={index} />:(<View style={styles.text}><Button style={{flex:1,width:'100%',alignItems:"center",justifyContent:"center"}} color="#A7001E" onPress={()=>increment()} title="+" ></Button></View>)}
             {!data.championship[gameName]["player"][index]["inDuel"] && <Text> </Text>}
         </View>)
     
@@ -73,14 +74,15 @@ const styles = StyleSheet.create({
           justifyContent: 'space-around',
           flexDirection:'row',
           width:"100%",
+          height:40,
           textAlign:"center",
           marginBottom:20,
-          backgroundColor:"#ECF8F6"
+          backgroundColor:"#f5efe6"
       },
       text:{
         textAlign:"center",
         flex:1,
-        color:"#226D68"
+        color:"#1E0F1C",
     }
   
     })

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         alignItems: 'center',
         justifyContent: 'space-around',
-        backgroundColor:"rgba(24,83,79,0.7)",
+        backgroundColor:"rgba(24,83,79,0.5)",
       },
     input: {
         height: 40,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         fontSize:20,
         borderRadius:15,
         borderWidth: 1,
-        color:"#FEEAA1",
+        color:"#E2E9C0",
         borderColor:"#18534F",
 
 

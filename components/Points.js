@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Modal, Pressable,ScrollView } from 'react-native';
 import React,{ useState, useEffect } from 'react'
 import { UserContext } from '../Context'
 
@@ -69,7 +69,7 @@ function Points({index,increment}){
 
     for(var i=1;i<21;i++){
         const value=i
-        pointsArray.push(<View key={i} style={styles.row}><Pressable onPress={()=>decreasePoints(value)}><Text>{i}</Text></Pressable><Pressable onPress={()=>decreasePoints(value*2)}><Text>x2</Text></Pressable><Pressable onPress={()=>decreasePoints(value*3)}><Text>x3</Text></Pressable></View>
+        pointsArray.push(<View key={i} style={styles.row}><Pressable style={styles.pressable} onPress={()=>decreasePoints(value)}><Text style={styles.firstText}>{i}</Text></Pressable><Pressable style={styles.pressable} onPress={()=>decreasePoints(value*2)}><Text style={styles.doubleText}>x2</Text></Pressable><Pressable style={styles.pressable} onPress={()=>decreasePoints(value*3)}><Text style={styles.tripleText}>x3</Text></Pressable></View>
             )
     }
 
@@ -81,37 +81,104 @@ function Points({index,increment}){
             visible={open}
             >
                 <View style={styles.modal}>
-                    <Text>{playerScore}</Text>
-                    <View style={styles.row}><Pressable onPress={()=>decreasePoints(0)}><Text>0</Text></Pressable><Text></Text><Text></Text></View>
+                    <Text style={styles.title}>Score: {playerScore} Fléchettes jouées: {timesPlayed}</Text>
+                    <View style={styles.row}><Pressable  style={styles.pressable} onPress={()=>decreasePoints(0)}><Text style={styles.firstText}>0</Text></Pressable><Text style={{textAlign:"center",flex:1}}></Text><Text style={{textAlign:"center",flex:1}}> </Text></View>
                     {pointsArray}
-                    <View style={styles.row}><Pressable onPress={()=>decreasePoints(25)}><Text>25</Text></Pressable><Pressable onPress={()=>decreasePoints(25*2)}><Text>x2</Text></Pressable><Text></Text></View>
-
-
+                    <View style={styles.row}><Pressable style={styles.pressable} onPress={()=>decreasePoints(25)}><Text style={styles.firstText}>25</Text></Pressable><Pressable  style={styles.pressable} onPress={()=>decreasePoints(25*2)}><Text style={styles.doubleText}>x2</Text></Pressable><Text style={{textAlign:"center",flex:1}}></Text></View>
                 </View>
             </Modal>
-            <Pressable
+
+            <View style={styles.viewPressable}>
+                <Pressable
                 onPress={()=>setOpen(true)}
-            >
-                <Text >{data.championship[gameName]["player"][index]["points"]}</Text>
-            </Pressable>   
+                style={styles.viewPressable}                >
+                    <Text >{data.championship[gameName]["player"][index]["points"]}</Text>
+                </Pressable> 
+            </View>  
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     view:{
-        flex:1
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    title:{
+        fontSize:20,
+        marginBottom:20,
+        
+    },
+    pressable:{
+        textAlign:"center",
+        flex:1,alignItems:"center",
+        justifyContent:"center",
+        height:"100%"
+
+    },
+    firstText:{
+        textAlign:"center",
+        textAlignVertical:"center",
+        flex:1,
+        backgroundColor:"black",
+        color:"white",
+        width:25,
+        borderRadius:25,
+        height:25
+    },
+    doubleText:{
+        textAlign:"center",
+        textAlignVertical:"center",
+        flex:1,
+        color:"white",
+        width:25,
+        borderRadius:25,
+        height:25,
+        backgroundColor:"#7AA95C"
+    },
+    tripleText:{
+        textAlign:"center",
+        textAlignVertical:"center",
+        flex:1,
+        color:"white",
+        width:25,
+        borderRadius:25,
+        height:25,
+        backgroundColor:"#A7001E"
     },
     modal:{
         flex:1,
         margin:20,
-        backgroundColor:"white"
+        backgroundColor:"#f5efe6",
+        marginTop:22,
+        justifyContent:"center",
+        alignItems:"center",
+        borderColor:"#18534F",
+        borderWidth:1,
+        borderRadius:15,
+        paddingBottom:10,
+
     },
     row:{
         flex:1,
         flexDirection:'row',
         width:'80%',
-        justifyContent:"space-around"
+        justifyContent:"space-around",
+        textAlign:"center",
+        alignItems:"center",
+        height:12,
+        marginBottom:5,
+       
+    },
+    viewPressable:{
+        flex:1,
+        width:"100%",
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:"#A7001E",
+        borderTopLeftRadius:5,
+        borderBottomLeftRadius:5,
     }
 
 

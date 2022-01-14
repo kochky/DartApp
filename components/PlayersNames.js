@@ -35,7 +35,7 @@ function PlayersNames({ navigation}){
       <ImageBackground source={image} style={styles.image}>    
         <View style={styles.container}>
             <Text style={{flex:1,color:"white",fontSize:20}}>Saisissez les prénoms</Text>
-            <ScrollView style={styles.inputContainer}>
+            <ScrollView  style={{width:"100%"}}contentContainerStyle={{ alignItems:"center"}}>
                 {textInputNames}
             </ScrollView>
             <View style={{flex:1}}>{(Object.keys(data.names).length===parseInt(data.players)) && <Button style={{flex:2}} title="Valider"color="#18534F"  onPress={() => navigation.navigate('Game')} ></Button>}</View>
@@ -55,22 +55,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:"rgba(24,83,79,0.7)",
-        paddingTop:"5%"
+        backgroundColor:"rgba(24,83,79,0.5)",
+        paddingTop:"5%",
+        width:"100%"
       },
-      inputContainer:{
-        // flex:7,
-        width:"100%",
-        // alignItems: 'center',
-        // justifyContent: 'center',
-      },
+  
     input: {
         margin: 12,
         borderWidth: 1,
         borderColor:"#18534F",
-
         textAlign:'center',
-        color:'#FEEAA1',
+        color:'#E2E9C0',
         width:"90%",
         borderRadius:15,
       },
